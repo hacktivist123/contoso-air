@@ -1,11 +1,14 @@
-FROM node:22
-ENV PORT 3000
-EXPOSE 3000
+FROM node:22-alpine
 
-RUN mkdir -p /usr/src/app
+ENV PORT=3000
+
+
 WORKDIR /usr/src/app
-COPY src/package.json .
-RUN npm install
-COPY . .
 
+COPY src/web/package*.json ./
+
+RUN npm ci --omit=dev
+COPY src/web .
+
+EXPOSE 3000
 CMD ["npm", "start"]
